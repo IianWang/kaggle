@@ -1,4 +1,6 @@
 # kaggle-泰坦尼克
+[项目飞机票](https://www.kaggle.com/c/titanic):airplane:
+
 ``` python
 import pandas as pd
 import numpy as np
@@ -6,6 +8,8 @@ import matplotlib as plot
 import matplotlib.pyplot as plt
 from collections import Counter
 import seaborn as sn
+import seaborn as sn
+sn.set_style('darkgrid')
 from pyecharts import Bar
 from pyecharts import Pie
 from pyecharts import Boxplot
@@ -56,3 +60,13 @@ bar.add('男性',index_list,male_list,mark_line=['average'],mark_point=['max','m
 bar
 ```
 ![one](male_and_female.png)
+<br>**看下年龄段的分布**<br>
+`df.Age.plot(kind='hist',title='年龄段分布',figsize=(8,5))`
+![picture](age_distribut.png)
+<br>**ok... 看起来大部分年龄集中在 18--40 岁，这很符合我对《泰坦尼克号》的印象，年轻人不仅镜头多而且实际上也是主体**:relaxed:<br>
+<br>**Ummmm.. 我特别想知道住头等舱的 “上流人士” 年龄组成，看看那些**<br>
+`df.query('Pclass == 1').Age.plot(kind='hist',title='头等舱年龄段分布',figsize=(8,5))`
+![picture](head_people.png)
+<br>**... 瞅着大体年龄段平均且丰富，较为集中在 18--55岁，35--42有峰值，也确实比总体年龄趋于大龄化，可这样子的**<br>
+`df.query('Pclass == 1').query('Sex == "male"').Age.plot(kind='hist',title='头等舱男性年龄段分布',figsize=(8,5))`
+![picture](head_male.png)
