@@ -1,4 +1,4 @@
-# kaggle-泰坦尼克
+# kaggle-泰坦尼克生还率预测
 [项目飞机票](https://www.kaggle.com/c/titanic):airplane:
 
 ``` python
@@ -7,7 +7,6 @@ import numpy as np
 import matplotlib as plot
 import matplotlib.pyplot as plt
 from collections import Counter
-import seaborn as sn
 import seaborn as sn
 sn.set_style('darkgrid')
 from pyecharts import Bar
@@ -74,4 +73,4 @@ bar
 <br>**单独看下gentleman的**<br>
 `df.query('Pclass == 1').query('Sex == "male"').Age.plot(kind='hist',title='头等舱男性年龄段分布',figsize=(8,5))`
 ![picture](head_male.png)
-<br>**that's great!这符合我的猜测，同样的35--42峰值，峰值前梯度上升，峰值后梯度递减，原因嘛..只可意会**<br>
+<br>**that's great!这符合我的猜测，同样的35--42峰值，峰值前梯度上升，峰值后梯度递减，原因不重要**<br>
