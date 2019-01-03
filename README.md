@@ -31,7 +31,9 @@ import statsmodels.api as sm
   - 生还率0.38
   - 平均年龄 29.70
   - 票价均数32.20，中位数14.45（偏位）
-  - 最低票价为零（目前不排除异常值的可能，这事也不着急
+  - 最低票价为零（目前不排除异常值的可能，这事也不着急）
+
+
 ``` python
 one_sur_male = len(df.query('Pclass == 1').query('Sex == "male"').query('Survived == 1'))/len(df.query('Pclass == 1').query('Sex == "male"'))
 one_sur_male = round(one_sur_male,2)
@@ -67,6 +69,9 @@ bar
 <br>**Ummmm.. 我特别想知道住头等舱的 “上流人士” 年龄组成，看看那些**<br>
 `df.query('Pclass == 1').Age.plot(kind='hist',title='头等舱年龄段分布',figsize=(8,5))`
 ![picture](head_people.png)
-<br>**... 瞅着大体年龄段平均且丰富，较为集中在 18--55岁，35--42有峰值，也确实比总体年龄趋于大龄化，可这样子的**<br>
+<br>**... 瞅着大体年龄段平均且丰富，较为集中在 18--55岁，35--42有峰值，也确实比总体年龄趋于大龄化，可这样子还是让我感到很奇怪，18--55中除去峰值那里，剩下的太过平均，我觉得不对劲，仔细回忆了下影片的细节:neckbeard:so... 我决定**<br>
+**。。。**
+<br>**单独看下gentleman的**<br>
 `df.query('Pclass == 1').query('Sex == "male"').Age.plot(kind='hist',title='头等舱男性年龄段分布',figsize=(8,5))`
 ![picture](head_male.png)
+<br>**that's great!这符合我的猜测，同样的35--42峰值，峰值前梯度上升，峰值后梯度递减，原因嘛..只可意会**<br>
