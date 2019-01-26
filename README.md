@@ -65,7 +65,7 @@ bar
 `df.Age.plot(kind='hist',title='年龄段分布',figsize=(8,5))`
 ![picture](age_distribut.png)
 <br>**ok... 看起来大部分年龄集中在 18--40 岁，这很符合我对《泰坦尼克号》的印象，年轻人不仅镜头多而且实际上也是主体**:relaxed:<br>
-<br>**Ummmm.. 我特别想知道住头等舱的 “上流人士” 年龄组成，看看那些**<br>
+<br>**Ummmm.. 我特别想知道住头等舱的 “上流人士” 年龄组成，看看那些Gentleman and Lady是否集中在意气风发的中年**<br>
 `df.query('Pclass == 1').Age.plot(kind='hist',title='头等舱年龄段分布',figsize=(8,5))`
 ![picture](head_people.png)
 <br>**... 瞅着大体年龄段平均且丰富，较为集中在 18--55岁，35--42有峰值，也确实比总体年龄趋于大龄化，可这样子还是让我感到很奇怪，18--55中除去峰值那里，剩下的太过平均，我觉得不对劲，仔细回忆了下影片的细节:neckbeard:so... 我决定**<br>
@@ -74,3 +74,10 @@ bar
 `df.query('Pclass == 1').query('Sex == "male"').Age.plot(kind='hist',title='头等舱男性年龄段分布',figsize=(8,5))`
 ![picture](head_male.png)
 <br>**that's great!这符合我的猜测，同样的35--42峰值，峰值前梯度上升，峰值后梯度递减，原因不重要**<br>
+
+## 二更。。。<br>
+虽然之前提到对头等舱男性的猜测得到了一个自我满足式的验证，可这不代表正确，有时候数据真的很会说谎，那么怎么验证更有说服力呢？恐怕要就数据和我们研究的具体内容下定论了，刚刚的头等舱男士年龄事实上是否真的集中在中年，那么我们可以出门左拐去看看历史文献或记录片吧啦吧啦。。。<br><br>
+废话不多说，各位看官咱接着往下走:smiley_cat:<br><br>
+虽说啊，这个年龄段分布大体上是看过了，可是对于年龄上的探索我可还不满足，谁叫它缺失值太多了，叫人寝食难安夜不能寐，我决定接着和大家絮叨两张图<br>
+`df.query('Survived == 1').Age.plot(kind='hist',title='生还者年龄分布',figsize=(8,5));`
+![picture](head_male.png)
