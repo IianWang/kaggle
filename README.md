@@ -102,8 +102,10 @@ df[['female','male']] = pd.get_dummies(df.Sex)
 df[['no','yes']] = pd.get_dummies(df.Cabin)
 df[['is_c','is_q','is_s']] = pd.get_dummies(df.Embarked)
 ```
-<br>
-查看下结果
-`df`<br>
+查看下结果<br>
+
 ![picture](3-2.png)<br>
 哼哼~很不错，所有给出的的分类变量都让我们因子化了。下面再考虑要做点什么呢？<br>
+我的目光再次盯到`Age`上，直觉告诉我我们之间还会有故事。<br>
+那就是标准化啦，我们所挑选准备放到分类器中的特征都是我们刚刚因子化得出的`0`或`1`。<br>
+倘若
