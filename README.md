@@ -30,9 +30,9 @@ import statsmodels.api as sm
   - 生还率0.38
   - 平均年龄 29.70
   - 票价均数32.20，中位数14.45（偏位）
-  - 最低票价为零（目前不排除异常值的可能，这事也不着急）
+  - 最低票价为零（可以作为后期建模的一个特征）
 
-
+以下分别对上面提到的字段进行下简单的查看
 ``` python
 one_sur_male = len(df.query('Pclass == 1').query('Sex == "male"').query('Survived == 1'))/len(df.query('Pclass == 1').query('Sex == "male"'))
 one_sur_male = round(one_sur_male,2)
