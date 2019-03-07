@@ -92,10 +92,33 @@ plt.show()
 <br>**貌似有迹可循哦！直观的来看中间大部分红色区域被蓝色区域给覆盖掉了，说明这部分死亡率是大于存活率的，不过0 ~ 15之间的红色区域异常的显眼，这部分为0~15岁的儿童，回溯之前的各舱位男女生还比率来讲，这种情形在意料之中。**<br>
 <br>**看过了性别、年龄这两个特征，那么剩下可供我们初步查看的有`SibSp`(兄弟姐妹/配偶)、`Parch`(父母/孩子)、`Fare`(票价)、`Cabin`(房间号)、`Embarked`(登船口)，那么我继续做出各个特征与生还率之间的关系**<br>
 <br>**这里呢我把`SibSp`、`Parch`相加到了一起生成一列新的特征`family`，下面我就以`family`为自变量，生还率为因变量来展示，但是为了更好的做出解释，我另加了一个不同的family人数与数量关系图**<br>
+```python
+df['family'] = df['SibSp'] + df['Parch']
+kind = sorted(list(df.family.value_counts().index))
+proportion_list = []
+for i in kind:
+    proportion = len(df.query('family == {}'.format(i)).query('Survived == 1')) / len(df.query('family == {}'.format(i)))
+    proportion_list.append(proportion)
+plt.figure(figsize=(12,7))
+sn.barplot(x=kind,y=proportion_list)
+plt.title('family与生还率')
+plt.xlabel('family')
+plt.ylabel('生还率');
+```
 ![one](/image//family_rate.png)
 <br>**横轴是family的所有个数类型，这里我没有把乘客自身加到里面，那么从得出的图像来讲family为7、10的生还率均为零，family等于3的生还率最高，比较有趣的是当family分别为4、5、7、8的时候我以为从4之后随着family人数增加生还率也会随之降低，但是family等于6的时候生还率出现的明显的增高。这是为什么呢？各位来看下图**<br>
+<br>照例先上代码<br>
+```python
+family_type = df.family.value_counts().index
+family_amount = df.family.value_counts().values
+plt.figure(figsize=(12,7))
+sn.barplot(x=family_type,y=family_amount)
+plt.title('family与数量')
+plt.xlabel('family')
+plt.ylabel('数量');
+```
 ![one](/image//family_amount.png)
-
+<br>**该图**<br>
 
 
 
