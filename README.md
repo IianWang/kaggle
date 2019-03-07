@@ -125,10 +125,40 @@ plt.ylabel('数量');
 ![one](/image//family_6.png)
 <br>**短短的四条数据蕴含着很多我们之前没有挖掘的信息，首先`Name`特征下，三个那个...英国人的命名我不太清楚，所以我去简单查了下，英语姓名的一般结构为：教名+自取名+姓，具体就不继续考究了，总之三个教名`Asplund`一模一样，再来看看`SibSp`(兄弟姐妹/配偶)、`Parch`(父母/孩子)两个特征，数量上面让我又觉得好像有某种联系，再来看下`Fare`(票价)，给我强烈的感觉认为她们是一家人，并且可能买的是团体票，关于票价的分布状态后面我会放出来。另外她们三个的票号也是一样的`Ticket`！**<br>
 <br>**那么现在明了了，这些是一个特殊的群体，她们面临着不利因素，家庭群体大，由之前的各类family生还率能推测，结果的生还率没有family为0、1、2、3的大，舱位等级三等舱，但同时她们有掌握着有利因素，`Sex`特征下female为主体、`Age`特征下有着3岁和5岁的baby，最终的结果影响了family为6时的生还率#family为6的乘客一共12人**<br>
-
-
-
-
+<br>**接着是`Fare`(票价)一个我认为有作用的但实际在分类器中却没起到什么作用的特征，不过图片还是要放出来滴，各位见仁见智啊**<br>
+```python
+df_first = df.query('Pclass == 1')
+plt.figure(figsize=(15,8))
+df_first.query('Survived == 1').query('200 > Fare ').Fare.plot(kind='hist',color='red',bins=150,label='幸存')
+df_first.query('Survived == 0').query('200 > Fare ').Fare.plot(kind='hist',color='blue',alpha=0.5,bins=150,label='遇难')
+plt.title('票价与生存情况(一等舱)')
+plt.xlabel('Fare(票价)')
+plt.legend()
+plt.ylabel('人数');
+```
+![one](/image//fare_1.png)
+```python
+df_two = df.query('Pclass == 2')
+plt.figure(figsize=(15,8))
+df_two.query('Survived == 1').query('200 > Fare ').Fare.plot(kind='hist',color='red',bins=150,label='幸存')
+df_two.query('Survived == 0').query('200 > Fare ').Fare.plot(kind='hist',color='blue',alpha=0.5,bins=150,label='遇难')
+plt.title('票价与生存情况(二等舱)')
+plt.xlabel('Fare(票价)')
+plt.legend()
+plt.ylabel('人数');
+```
+![one](/image//fare_2.png)
+```python
+df_three = df.query('Pclass == 3')
+plt.figure(figsize=(15,8))
+df_three.query('Survived == 1').query('200 > Fare ').Fare.plot(kind='hist',color='red',bins=150,label='幸存')
+df_three.query('Survived == 0').query('200 > Fare ').Fare.plot(kind='hist',color='blue',alpha=0.5,bins=150,label='遇难')
+plt.title('票价与生存情况(三等舱)')
+plt.xlabel('Fare(票价)')
+plt.legend()
+plt.ylabel('人数');
+```
+![one](/image//fare_3.png)
 
 
 
