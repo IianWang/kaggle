@@ -118,7 +118,7 @@ plt.xlabel('family')
 plt.ylabel('数量');
 ```
 ![one](/image//family_amount.png)
-<br>**该图**<br>
+<br>**该图展示了各个种类family的数量，可以看到当family等于0占据了相当大的一部分，family 3 ~ 10在总体的比重相当的低，所以目标群体越小越不能排除偶然性，既然这样，我就把family等于6的乘客单独拿出来看看，**<br>
 
 
 
