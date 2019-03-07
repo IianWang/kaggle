@@ -60,8 +60,7 @@ bar.add('女性',index_list,female_list,mark_line=['average'],mark_point=['max',
 bar.add('男性',index_list,male_list,mark_line=['average'],mark_point=['max','min'])
 bar
 ```
-
-![picture](age_distribut.png)
+![one](male_and_female.png)
 
 <br>**看下各舱位年龄段的分布**<br>
 ```python
@@ -76,7 +75,9 @@ plt.legend()
 plt.show()
 ```
 ![one](/image//cabin.png)
-<br>**ok... 看起来大部分年龄集中在 18--40 岁，这很符合我对《泰坦尼克号》的印象，年轻人不仅镜头多而且实际上也是主体**:relaxed:<br>
+
+<br>**emm...，可以看到三等舱的旅客年龄更加的集中于15 ~ 37 区间段，二等舱大致与三等舱主体分布相同，不过稍稍向x轴右边移动了些貌似为 14 ~ 42，一等舱较为独特的是看起来没有较为突出的年龄区间，看到32 ~ 40部分稍稍凸起且两侧对称，估计平均年龄在36左右，这很符合我对《泰坦尼克号》的印象，年轻人不仅镜头多而且实际上也是主体**:relaxed:<br>
+
 <br>**Ummmm.. 我特别想知道住头等舱的 “上流人士” 年龄组成，看看那些Gentleman and Lady是否集中在意气风发的中年**<br>
 `df.query('Pclass == 1').Age.plot(kind='hist',title='头等舱年龄段分布',figsize=(8,5))`
 ![picture](head_people.png)
