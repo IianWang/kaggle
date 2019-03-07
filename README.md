@@ -17,9 +17,9 @@ import statsmodels.api as sm
 1.了解数据
 ![one](06a4a4f147936679a02db1d5eed1c9f.png)
 `df.info()`
-![one](8c06e2a5690ea8ae3c9f3aa7a4f5aa3.jpg)
+![one](/image//info.png)
 `df.describe()`
-![one](Image.jpg)
+![one](/image//describe.png)
 
 ### 对原始数据基础描述：
 - 描述一
