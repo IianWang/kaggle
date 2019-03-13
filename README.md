@@ -1,6 +1,6 @@
 # kaggle-泰坦尼克生还率预测
 [项目飞机票](https://www.kaggle.com/c/titanic):airplane:
-
+## 1.导入数据
 ``` python
 import pandas as pd
 import numpy as np
@@ -14,14 +14,14 @@ from pyecharts import Pie
 from pyecharts import Boxplot
 import statsmodels.api as sm
 ```
-1.了解数据
+`df.head(9)`
 ![one](06a4a4f147936679a02db1d5eed1c9f.png)
 `df.info()`
 ![one](/image//info.png)
 `df.describe()`
 ![one](/image//describe.png)
 
-### 对原始数据基础描述：
+### 对原始数据基本描述：
 - 描述一
   - Age(年龄)存在小部分缺失值
   - Cabin(客舱)存在大量缺失值
@@ -32,7 +32,7 @@ import statsmodels.api as sm
   - 票价均数32.20，中位数14.45（偏位）
   - 最低票价为零（可以作为后期建模的一个特征）
 
-以下分别对上面提到的字段进行下简单的查看
+## 2.数据探索
 ``` python
 one_sur_male = len(df.query('Pclass == 1').query('Sex == "male"').query('Survived == 1'))/len(df.query('Pclass == 1').query('Sex == "male"'))
 one_sur_male = round(one_sur_male,2)
@@ -123,7 +123,8 @@ plt.ylabel('数量');
 `df.query('family == 6').query('Survived == 1')`
 <br>
 ![one](/image//family_6.png)
-<br>**短短的四条数据蕴含着很多我们之前没有挖掘的信息，首先`Name`特征下，三个那个...英国人的命名我不太清楚，所以我去简单查了下，英语姓名的一般结构为：教名+自取名+姓，具体就不继续考究了，总之三个教名`Asplund`一模一样，再来看看`SibSp`(兄弟姐妹/配偶)、`Parch`(父母/孩子)两个特征，数量上面让我又觉得好像有某种联系，再来看下`Fare`(票价)，给我强烈的感觉认为她们是一家人，并且可能买的是团体票，关于票价的分布状态后面我会放出来。另外她们三个的票号也是一样的`Ticket`！**<br>
+<br><br>
+<br>**短短的四条数据蕴含着很多我们之前没有挖掘的信息，首先`Name`特征下，三个那个...英国人的命名我不太清楚，所以我去简单查了下，英语姓名的一般结构为：教名+自取名+姓，具体就不继续考究了，总之三个教名`Asplund`一模一样，再来看看`SibSp`(兄弟姐妹/配偶)、`Parch`(父母/孩子)两个特征，数量上面让我又觉得好像有某种联系，再来看下`Fare`(票价)，给我强烈的感觉认为她们是一家人，并且可能买的是团体票，关于票价的分布状态后面我会放出来。另外她们三个的票号也是一样的`Ticket`！**<br><br>
 <br>**那么现在明了了，这些是一个特殊的群体，她们面临着不利因素，家庭群体大，由之前的各类family生还率能推测，结果的生还率没有family为0、1、2、3的大，舱位等级三等舱，但同时她们有掌握着有利因素，`Sex`特征下female为主体、`Age`特征下有着3岁和5岁的baby，最终的结果影响了family为6时的生还率#family为6的乘客一共12人**<br>
 <br>**接着是`Fare`(票价)一个我认为有作用的但实际在分类器中却没起到什么作用的特征，不过图片还是要放出来滴，各位见仁见智啊**<br>
 ```python
@@ -159,6 +160,8 @@ plt.legend()
 plt.ylabel('人数');
 ```
 ![one](/image//fare_3.png)
+<br>
+**对比了这三张图片，直观的看，红色的面积会随着舱位等级的增加随之会减小**
 
 
 
