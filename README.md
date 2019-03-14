@@ -1,5 +1,6 @@
 # kaggle-泰坦尼克生还率预测
 [项目飞机票](https://www.kaggle.com/c/titanic):airplane:
+
 ## 1.导入数据
 ``` python
 import pandas as pd
@@ -199,8 +200,8 @@ plt.bar('Q',Q_Survived,color = 'red')
 plt.legend();
 ```
 ![one](/image//Embarked_S_Q_C.png)
-
-
+<br>**从图像上看， `C`与`Q`的差异性并不是太大，存活与遇难比例接近1：1，不过`S`却有明显的差异，遇难的比重更大一些，该特征依然可以放入我们的分类器中尝试一下**<br><br><br>
+### 到这里为止我们的各个特征的数据探索已经搞定。so~~~<br>
 
 
 
