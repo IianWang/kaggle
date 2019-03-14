@@ -181,7 +181,24 @@ plt.legend();
 <br>**从图像上我们可以看到`有房间号`与`无房间号`，在生还比例上有着截然相反的差异，有房间号的生还率更加的大一些，为此我们可以把`Cabin`当做一个重要特征来对待**<br><br><br>
 **现在只剩下`Embarked`(登船口)了，抛去两个缺失字段不看，剩下的字段包括`S`,`C`,`Q`，其中C =瑟堡，Q =皇后镇，S =南安普敦。三个登船岸口**<br>
 ![one](/image//titanic路线.png)
-**照例，让我们看下不同的登船口对生还率有没有影响**
+<br>**照例，让我们看下不同的登船口对生还率有没有影响**<br>
+```python
+S_died = df_orginal.query('Embarked == "S"').query('Survived == 0').shape[0]
+S_Survived = df_orginal.query('Embarked == "S"').query('Survived == 1').shape[0]
+C_died = df_orginal.query('Embarked == "C"').query('Survived == 0').shape[0]
+C_Survived = df_orginal.query('Embarked == "C"').query('Survived == 1').shape[0]
+Q_died = df_orginal.query('Embarked == "Q"').query('Survived == 0').shape[0]
+Q_Survived = df_orginal.query('Embarked == "Q"').query('Survived == 1').shape[0]
+plt.figure(figsize=(8,6))
+plt.bar('S',S_died,label = 'died',color = 'blue',bottom = S_Survived)
+plt.bar('S',S_Survived,label = 'Survived',color = 'red')
+plt.bar('C',C_Survived,color = 'red',bottom = C_died)
+plt.bar('C',C_died,color = 'blue')
+plt.bar('Q',Q_died,color = 'blue',bottom = Q_Survived)
+plt.bar('Q',Q_Survived,color = 'red')
+plt.legend();
+```
+![one](/image//Embarked_S_Q_C.png)
 
 
 
