@@ -214,7 +214,7 @@ plt.legend();
 - 三、离散化部分线性特征
   - 离散化并虚拟化Age(年龄)
   - 离散化并虚拟化Fare(票价)
-  - 离散化name_len(姓名的长度)
+  - 增加一列姓名长度的特征name_len，然后离散化(姓名的长度)
 - 四、虚拟化部分分类变量
   - 虚拟化Pclass(舱位等级)
   - 虚拟化Sex(性别)
@@ -222,7 +222,6 @@ plt.legend();
 - 五、构建新特征(**当然之前的离散化和虚拟化都属于构建新特征**)
   - 将SibSp与Parch相加生成新特征family
   - 提取Name下字段中的称呼例如:Mr、Mrs、Miss等生成新特征called
-  - 增加一个用来表示姓名长度的特征name_len
 - 六、因子化类别特别多的分类变量
   - 因子化called(称呼)，在提取Name字段中的称呼时，产生的类别较多，采用虚拟化将生成与类别数目相等的特征，为了方便管理，这里采用因子化
   - 因子化cabin_first(客舱号首字母)
@@ -285,6 +284,12 @@ plt.legend();
   `df[['Embarked_c','Embarked_q','Embarked_s']] = pd.get_dummies(df.Embarked)`
 ### 5.1 将SibSp与Parch相加生成新特征family
   `df['family'] = df['SibSp'] + df['Parch']`
+### 5.2 提取Name下字段中的称呼例如:Mr、Mrs、Miss等生成新特征called
+  ```python
+    df[['fame','last_name']] = df.Name.str.split(',',expand=True)
+    df[['call','last_name_2','nothing']] = df.last_name.str.split('.',expand=True)
+    df['call_factorize'] = pd.factorize(df.call)[0]
+   ```
   
   
 
