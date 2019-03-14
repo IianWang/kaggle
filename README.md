@@ -165,9 +165,23 @@ plt.ylabel('人数');
 **关于`Cabin`(房间号)在开始存在大量的缺失值，貌似不能进行过多的探索**
 ![one](/image//info.png)
 <br>**不过最起码我们可以把房间号分为两类，`有房间号`与`无房间号`，同样的把这两类的生还人数与死亡人数拉出来对比一下**
+```python
+Survived_yes = df_orginal[~df_orginal.Cabin.isnull()].query('Survived == 1').shape[0]
+died_yes = df_orginal[~df_orginal.Cabin.isnull()].query('Survived == 0').shape[0]
+Survived_no = df_orginal[df_orginal.Cabin.isnull()].query('Survived == 1').shape[0]
+died_no = df_orginal[df_orginal.Cabin.isnull()].query('Survived == 0').shape[0]
+plt.figure(figsize=(8,6))
+plt.bar('有房间号',Survived_yes,label = 'Survived',color = 'red',bottom = died_yes)
+plt.bar('有房间号',died_yes,label = 'died',color = 'blue')
+plt.bar('无房间号',died_no,color = 'blue',bottom = Survived_no)
+plt.bar('无房间号',Survived_no,color = 'red')
+plt.legend();
+```
 ![one](/image//cabin_yes_no.png)
 <br>**从图像上我们可以看到`有房间号`与`无房间号`，在生还比例上有着截然相反的差异，有房间号的生还率更加的大一些，为此我们可以把`Cabin`当做一个重要特征来对待**<br><br><br>
-
+**现在只剩下`Embarked`(登船口)了，抛去两个缺失字段不看，剩下的字段包括`S`,`C`,`Q`，其中C =瑟堡，Q =皇后镇，S =南安普敦。三个登船岸口**<br>
+![one](/image//titanic路线.png)
+**照例，让我们看下不同的登船口对生还率有没有影响**
 
 
 
