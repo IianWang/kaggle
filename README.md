@@ -213,7 +213,7 @@ plt.legend();
   - 对Fare(票价)进行特征缩放
 - 三、离散化部分线性特征
   - 离散化并虚拟化Age(年龄)
-  - 离散化Fare(票价)
+  - 离散化并虚拟化Fare(票价)
   - 离散化name_len(姓名的长度)
 - 四、虚拟化部分分类变量
   - 虚拟化Pclass(舱位等级)
@@ -242,7 +242,7 @@ plt.legend();
     predictedAges = rfr.predict(unknown_age[:,1::])
     df.loc[age_df.Age.isnull(),'Age'] = predictedAges
   ```
-### 1.2 使用字母“Z”对`Cabin`进行填充
+### 1.2 使用字母“Z”对Cabin(客舱号)进行填充
   `df.Cabin[df.Cabin.isnull()] = 'Z'`
 ### 1.3 使用Embarked(登船口)众数对Embarked(登船口)填充
   `df.loc[df.Embarked.isnull(),'Embarked'] = df.Embarked.mode()[0]`
@@ -260,9 +260,19 @@ plt.legend();
 ```python
   cut_age = [0,7,11,16,36,38,63,78,100] # 对年龄分区间
   # 分割区间，并虚拟化
-  df[['age_0_7','age_7_11','age_11_16','age_16_36','age_36_38','age_38_63','age_63_78','age_78_100']] =   pd.get_dummies(pd.cut(df_orginal.Age,cut_age))
+  df[['age_0_7','age_7_11','age_11_16','age_16_36','age_36_38','age_38_63','age_63_78','age_78_100']] = pd.get_dummies(pd.cut(df_orginal.Age,cut_age))
 ```
-
+### 3.2 离散化并因子化Fare(票价)
+  ```python
+  df[['fare_0_7','fare_7_10','fare_10_21','fare_21_39','fare_39_512']] = pd.get_dummies(pd.qcut(df['Fare'],5))
+  ```
+  <br>这里值得一提的是年龄我采用了手动分割区间，票价我采用`qcut`函数自动分割区间，当我采用了手动分割区间后模型在预测集上的分数有了较为明显的提升，不过票价我也尝试过手动分割，效果并不理想。<br>
+### 3.3 离散化name_len(姓名的长度)
+<br>首先生成一列姓名长度的特征
+  ```python
+    df['name_len'] = df.Name.apply(len)
+    df[['name_12_20','name_20_25','name_25_30','name_30_82']] = pd.get_dummies(pd.qcut(df.name_len,4))
+  ```
 
   
   
