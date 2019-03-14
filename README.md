@@ -318,5 +318,24 @@ plt.legend();
   ```
   <br>**查看在测试集上的准确率**<br>
   `(np.array(pred_y) - np.array(test_feature_y) == 0).mean()`
-  
+  <br>**我这里有几个方法对模型和特征好坏的校检方法**<br>
+  ### 交叉验证
+  ```python
+    # 导入交叉验证模块
+    from sklearn.model_selection import cross_val_score
+    train_x = df.as_matrix()[:,1:]
+    train_y = df.as_matrix()[:,:1]
+    lr = linear_model.LogisticRegression(penalty='l2',random_state=0)
+    cross_val_score(classifier,train_x,train_y,cv=5)
+  ```
+ ### 混淆矩阵
+   ```python
+    # 导入矩阵模块
+    from sklearn.metrics import confusion_matrix,f1_score
+    confusion_matrix(test_feature_y,pred_y)
+  ```
+ ### 查看特征权重
+  ```python
+  pd.DataFrame({"columns":list(train_df.columns[1:]), "coef":list(classifier.coef_.T)})
+  ```
  
