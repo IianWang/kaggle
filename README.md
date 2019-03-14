@@ -207,13 +207,12 @@ plt.legend();
 <br>**本次的数据处理分别有以下几个步骤**
 - 一、填充缺失值
   - 填充Age(年龄)存在小部分缺失值
-  - 填充Cabin(客舱)存在大量缺失值
+  - 填充Cabin(客舱号)存在大量缺失值
   - 填充Embarked(登船口)存在不明显的缺失值
-- 二、特征缩放
-  - 对Age(年龄)进行特征缩放
+- 二、特征缩放(标准化)
   - 对Fare(票价)进行特征缩放
 - 三、离散化部分线性特征
-  - 离散化Age(年龄)
+  - 离散化并虚拟化Age(年龄)
   - 离散化Fare(票价)
   - 离散化name_len(姓名的长度)
 - 四、虚拟化部分分类变量
@@ -226,6 +225,44 @@ plt.legend();
   - 增加一个用来表示姓名长度的特征name_len
 - 六、因子化类别特别多的分类变量
   - 因子化called(称呼)，在提取Name字段中的称呼时，产生的类别较多，采用虚拟化将生成与类别数目相等的特征，为了方便管理，这里采用因子化
+  - 因子化cabin_first(客舱号首字母)
+  
+<br><br>**关于数据处理的步骤大概就是上述的这些，下面让我们开始操作吧**<br><br>
+### 1.1 使用随机森林填充年龄的缺失值(当然其它的方法也可以做到，我只尝试了随机森林和多项式回归)
+  ```python
+    # 划分数据集
+    age_df = df[['Age','Pclass','SibSp','Parch','scaler_of_fare']]
+    known_age = age_df[age_df.Age.notnull()].as_matrix()
+    unknown_age = age_df[age_df.Age.isnull()].as_matrix()
+    y = known_age[:,0]
+    x = known_age[:,1:]
+    # 创建分类器进行拟合、预测、填充
+    rfr = RandomForestRegressor(random_state=0,n_estimators=2000,n_jobs=-1)
+    rfr.fit(x,y)
+    predictedAges = rfr.predict(unknown_age[:,1::])
+    df.loc[age_df.Age.isnull(),'Age'] = predictedAges
+  ```
+### 1.2 使用字母“Z”对`Cabin`进行填充
+  `df.Cabin[df.Cabin.isnull()] = 'Z'`
+### 1.3 使用Embarked(登船口)众数对Embarked(登船口)填充
+  `df.loc[df.Embarked.isnull(),'Embarked'] = df.Embarked.mode()[0]`
+
+### 2.1 对Fare(票价)进行特征缩放
+  ```python
+  # 导入模块，创建标准化函数
+  import sklearn.preprocessing as preprocessing
+  scaler = preprocessing.StandardScaler()
+  # 拟合并转化
+  fare_scaler = scaler.fit(df.Fare.values.reshape(-1,1))
+  df['scaler_of_fare'] = fare_scaler.fit_transform(df.Fare.values.reshape(-1,1))
+  ```
+### 3.1 离散化并因子化Age(年龄)
+```python
+  cut_age = [0,7,11,16,36,38,63,78,100] # 对年龄分区间
+  # 分割区间，并虚拟化
+  df[['age_0_7','age_7_11','age_11_16','age_16_36','age_36_38','age_38_63','age_63_78','age_78_100']] =   pd.get_dummies(pd.cut(df_orginal.Age,cut_age))
+```
+
 
   
   
