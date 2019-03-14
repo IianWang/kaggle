@@ -267,14 +267,24 @@ plt.legend();
   df[['fare_0_7','fare_7_10','fare_10_21','fare_21_39','fare_39_512']] = pd.get_dummies(pd.qcut(df['Fare'],5))
   ```
   <br>这里值得一提的是年龄我采用了手动分割区间，票价我采用`qcut`函数自动分割区间，当我采用了手动分割区间后模型在预测集上的分数有了较为明显的提升，不过票价我也尝试过手动分割，效果并不理想。<br>
-### 3.3 离散化name_len(姓名的长度)
-<br>首先生成一列姓名长度的特征
+### 3.3 离散化name_len(姓名的长度)<br>
+
   ```python
+    # 首先生成一列姓名长度的特征
     df['name_len'] = df.Name.apply(len)
+    # 这里也是采用的自动分割
     df[['name_12_20','name_20_25','name_25_30','name_30_82']] = pd.get_dummies(pd.qcut(df.name_len,4))
   ```
-
+  <br>**这里对数据进行离散化时候最主要的侧重点在于数据的分割方式，我们把分割后的每一个区间叫做“箱”或“桶”，总之理解为容器就可以，`quct`函数在分割数据的时候侧重于数据量与分割点打到一个均衡，也就是说这个分割点没有我们手动分的那么精确，但是也是较为准确的，同时保持了每一“箱“的数据量均衡。这样做的优点可以更大程度的避免过拟合的风险，缺点是精度没我们想象的那么好也就是增大了欠拟合的风险。而手动分割的结局恰好相反。采用哪种方式，还得具体情况具体分析了**<br>
   
+### 4.1 虚拟化Pclass(舱位等级)
+  `df[['Pclass_first','Pclass_second','Pclass_third']] = pd.get_dummies(df.Pclass)`
+### 4.2 虚拟化Sex(性别)<br>
+  `df[['sex_female','sex_male']] = pd.get_dummies(df.Sex)`
+### 4.3 虚拟化Embarked(登船口)
+  `df[['Embarked_c','Embarked_q','Embarked_s']] = pd.get_dummies(df.Embarked)`
+### 5.1 将SibSp与Parch相加生成新特征family
+  `df['family'] = df['SibSp'] + df['Parch']`
   
   
 
