@@ -298,6 +298,25 @@ plt.legend();
     # 因子化每个首字母
     df['cabin_first'] = pd.factorize(df['cabin_first'])[0]
   ```
-  
+  **OK，我们的特征处理现在已经全部搞定了。下面我们可以建模啦！**
+  ## 4.模型的建立
+  ```python
+  # 导入所需模块
+  from sklearn import linear_model
+  from sklearn.cross_validation import train_test_split
+  # 拆分自变量、因变量
+  train_feature_x = train_feature.as_matrix()[:,1:]
+  train_feature_y = train_feature.as_matrix()[:,:1]
+  # 训练、测试集分割
+  train_feature_x,test_feature_x,train_feature_y,test_feature_y = train_test_split(train_feature_x,train_feature_y,test_size=0.2,random_state=0)
+  # 创建分类器
+  classifier = linear_model.LogisticRegression()
+  # 进行拟合
+  classifier.fit(train_feature_x,train_feature_y)
+  # 预测
+  pred_y = classifier.predict(test_feature_x)
+  ```
+  <br>**查看在测试集上的准确率**<br>
+  `(np.array(pred_y) - np.array(test_feature_y) == 0).mean()`
   
  
