@@ -224,7 +224,7 @@ plt.legend();
   - 提取Name下字段中的称呼例如:Mr、Mrs、Miss等生成新特征called
 - 六、因子化类别特别多的分类变量
   - 因子化called(称呼)，在提取Name字段中的称呼时，产生的类别较多，采用虚拟化将生成与类别数目相等的特征，为了方便管理，这里采用因子化
-  - 因子化cabin_first(客舱号首字母)
+  - 因子化cabin_first(客舱号首字母),并进行因子化
   
 <br><br>**关于数据处理的步骤大概就是上述的这些，下面让我们开始操作吧**<br><br>
 ### 1.1 使用随机森林填充年龄的缺失值(当然其它的方法也可以做到，我只尝试了随机森林和多项式回归)
@@ -288,30 +288,16 @@ plt.legend();
   ```python
     df[['fame','last_name']] = df.Name.str.split(',',expand=True)
     df[['call','last_name_2','nothing']] = df.last_name.str.split('.',expand=True)
-    df['call_factorize'] = pd.factorize(df.call)[0]
    ```
+### 6.1 因子化called(称呼)
+  `df['call_factorize'] = pd.factorize(df.call)[0]`
+### 6.2 因子化cabin_first(客舱号首字母)，并进行因子化
+  ```python
+    # 正则取出首字母
+    df['cabin_first'] = df['Cabin'].map(lambda x:re.compile("([a-zA-Z]+)").search(x).group())
+    # 因子化每个首字母
+    df['cabin_first'] = pd.factorize(df['cabin_first'])[0]
+  ```
   
   
-
-
-## 前面絮叨了太多，下面开始正题。<br>
-目前的数据集长这样，仅仅是拟合了下年龄对缺失的年龄进行的填充<br>
-![picture](3-1.png)<br>
-下面我需要对其它的特征采取点措施了，这么多的分类变量最先让我想到的就是因子化了。<br>
-通过把类别返回成`0`或`1`，放入我们之后的分类器中。其中`1`表`是`,`0`表`否`。<br>
-让我们再回到数据中看看，能够进行特征因子化的变量有`Pclass`,`Sex`,`Cabin`,`Embarked`。<br>
-```python
-df[['first','second','third']] = pd.get_dummies(df.Pclass)
-df[['female','male']] = pd.get_dummies(df.Sex)
-df[['no','yes']] = pd.get_dummies(df.Cabin)
-df[['is_c','is_q','is_s']] = pd.get_dummies(df.Embarked)
-```
-查看下结果<br>
-
-![picture](3-2.png)<br>
-哼哼~很不错，所有给出的的分类变量都让我们因子化了。下面再考虑要做点什么呢？<br>
-我的目光再次盯到`Age`上，直觉告诉我我们之间还会有故事。<br>
-那就是标准化啦，我们所挑选准备放到分类器中的特征都是我们刚刚因子化得出的`0`或`1`。<br>
-倘若我把`Age`一并放入会怎样？先看下我们之前所做的因子化的变量，所有经过因子化的变量的方差都在`0~1`之间，我们看下`Age`这一列的值。<br>
-![picture](3-4.png)<br>
-普遍都为两位数，如果加入了未处理的`Age`会怎样呢？该变量的方差为170，我们了解回归拟合原理是用到了最小二乘法的，可想而知单个变量170的方差会对一堆`0~1`方差变量的拟合造成怎样的影响！<br>
+ 
