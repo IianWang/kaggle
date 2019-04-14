@@ -291,7 +291,7 @@ plt.legend();
    ```
 ### 6.1 因子化called(称呼)
   `df['call_factorize'] = pd.factorize(df.call)[0]`
-### 6.2 因子化cabin_first(客舱号首字母)，并进行因子化
+### 6.2 因子化cabin_first(客舱号首字母)
   ```python
     # 正则取出首字母
     df['cabin_first'] = df['Cabin'].map(lambda x:re.compile("([a-zA-Z]+)").search(x).group())
