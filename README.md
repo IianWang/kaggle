@@ -298,44 +298,6 @@ plt.legend();
     # 因子化每个首字母
     df['cabin_first'] = pd.factorize(df['cabin_first'])[0]
   ```
-  **OK，我们的特征处理现在已经全部搞定了。下面我们可以建模啦！**
-  ## 4.模型的建立
-  ```python
-  # 导入所需模块
-  from sklearn import linear_model
-  from sklearn.cross_validation import train_test_split
-  # 拆分自变量、因变量
-  train_feature_x = train_feature.as_matrix()[:,1:]
-  train_feature_y = train_feature.as_matrix()[:,:1]
-  # 训练、测试集分割
-  train_feature_x,test_feature_x,train_feature_y,test_feature_y = train_test_split(train_feature_x,train_feature_y,test_size=0.2,random_state=0)
-  # 创建分类器
-  classifier = linear_model.LogisticRegression()
-  # 进行拟合
-  classifier.fit(train_feature_x,train_feature_y)
-  # 预测
-  pred_y = classifier.predict(test_feature_x)
-  ```
-  <br>**查看在测试集上的准确率**<br>
-  `(np.array(pred_y) - np.array(test_feature_y) == 0).mean()`
-  <br>**我这里有几个方法对模型和特征好坏的校检方法**<br>
-  ### 交叉验证
-  ```python
-    # 导入交叉验证模块
-    from sklearn.model_selection import cross_val_score
-    train_x = df.as_matrix()[:,1:]
-    train_y = df.as_matrix()[:,:1]
-    lr = linear_model.LogisticRegression(penalty='l2',random_state=0)
-    cross_val_score(classifier,train_x,train_y,cv=5)
-  ```
- ### 混淆矩阵
-   ```python
-    # 导入矩阵模块
-    from sklearn.metrics import confusion_matrix,f1_score
-    confusion_matrix(test_feature_y,pred_y)
-  ```
- ### 查看特征权重
-  ```python
-  pd.DataFrame({"columns":list(train_df.columns[1:]), "coef":list(classifier.coef_.T)})
-  ```
- 
+## 数据处理(更新)
+**缘由是我在上面的的特征衍生又增加了部分特征，排名小有突破，所以在这里一并的把之后做的有效果的特征都放上来**<br>
+
