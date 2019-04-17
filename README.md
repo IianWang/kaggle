@@ -304,7 +304,7 @@ plt.legend();
   - child_family_little_2(家庭成员小于等于三不算自身，且年龄小于16岁的孩子)
   - male_than_50(大于50岁的男性)
   - is_group(票号相同且教名一样的乘客)
-### `child_family_little_2`代码
+### `child_family_little_2`添加原因:
   ```python
     df['child_family_little_2'] = 0
     df.loc[df.query('0<=Age<16').query('family <=3 ').index,'child_family_little_2'] = 1
@@ -317,4 +317,18 @@ plt.legend();
  ![one](/image//survived.png)
  **可以看到年龄在8 ~ 11的区间蓝色确实覆盖了红色，比不过在十二三四岁那一段红色又突出了，所以我觉得不管怎样我还是想找出8 ~ 16岁之间的幸存下来的孩子与遇难的孩子之间的差异，经过一番折腾后我把目标定格在`family`家庭人数上，我发现幸存的孩子的family数量绝大部分集中在3个以内，可以看下图，区别还是很明显的，所以我用`child_family_little_2`替换掉了`age_0_7`，因为我觉得这个特征更好些，有人可能会问为什么去掉`age_0_7`，两者都保留不可以吗？emmm..我只能说这得分情况，当它们两个相关性较弱的情况下这两着可以考虑同时保留**
  
+ ```python
+# 图片代码
+plt.figure(figsize=(14,8))
+df_orginal_train.query('0< Age < 16').query('Survived == 1').family.plot(kind='hist',color='blue',alpha=0.5,label='幸存')
+df_orginal_train.query('0< Age < 16').query('Survived == 0').family.plot(kind='hist',color='red',alpha=0.5,label='遇难')
+plt.title('0 ~ 16岁儿童的family数量生还与遇难对比')
+plt.xlabel('family')
+plt.ylabel('amount')
+plt.legend()
+plt.show()
+```
  ![one](/image//child_zero_to_sixtten.png)
+
+### `male_than_50`添加原因:
+**前面说了关于孩子，接着我又重新的审视下了年龄，剩下的还有年轻人和老年人，关于年轻人的我个人认为噪声大于孩子和老年人，所以我锁定在老年人身上，**
