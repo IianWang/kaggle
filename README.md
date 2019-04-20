@@ -331,4 +331,16 @@ plt.show()
  ![one](/image//child_zero_to_sixtten.png)
 
 ### `male_than_50`添加原因:
-**前面说了关于孩子，接着我又重新的审视下了年龄，剩下的还有年轻人和老年人，关于年轻人的我个人认为噪声大于孩子和老年人，所以我锁定在老年人身上，**
+**前面说了关于孩子，接着我又重新的审视下了年龄，剩下的还有年轻人和老年人，关于年轻人的我个人认为噪声大于孩子和老年人，所以我锁定在老年人身上，所以在分别查看男性与女性的年龄与生还率的关系图后，我发现大于50岁的男性生还率明显比前面低了很多，所以我令大于50岁的男性返回为1，其余返回为零。**<br>
+```python
+df['male_than_50'] = 0
+df.loc[df.query('Age >= 50').query('Sex == "male"').index,'male_than_50'] = 1
+```
+### `is_group`添加原因:
+**关于前面所发现的家庭票或者是团体票，所以有的人是结伴而来的，有人是自己一个人，所以令同票号且相同教名返回为 1 ，剩下的返回为 0 .**<br>
+```python
+df[['Baptismal_name','new_name']] = df.Name.str.split(',',expand=True)
+list_small_ticket = list(df.groupby(['Ticket','Baptismal_name'],as_index=False).count().query('Pclass==1').Baptismal_name)
+chang_Baptismal_name = lambda x:0 if x in list_small_ticket else 1
+df['is_group'] = df.Baptismal_name.apply(chang_Baptismal_name)
+```
