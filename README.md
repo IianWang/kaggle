@@ -346,7 +346,7 @@ df['is_group'] = df.Baptismal_name.apply(chang_Baptismal_name)
 ```
 ### 以上关于更新的特征就说完了，下面是我个人认为另一个重要的部分---特征评估
 ## 4.特征评估
--**我个人把筛选特征分为以下两点**
+-**我个人把本次筛选特征分为以下两点**
   - 特征性价比
   - 特征共线性
 ### 4.1 特征性价比
@@ -355,3 +355,36 @@ df['is_group'] = df.Baptismal_name.apply(chang_Baptismal_name)
 **关于正则化计算思想比较容易理解其表达式常写作 SSE+λ∣β∣，SSE这里为The sum of squares dueto error（误差平方和）的简称，理论上是特征随着特征越来越多，这个 SSE 就会越来越小。那么 λ∣β∣称为惩罚项 λ 为惩罚系数，当每增加一个特征，这个惩罚项就会增大，同时 SSE 会变小，那么他们的和可能比原来更大可能比原来更小，如果比原来小--那么很好，我们保留新增特征，反之舍弃。**
 ### 4.2 特征共线性
 **我们通常保留那些与标签线性相关的特征，因为这种特征能反映标签的趋势从而帮助我们预测。那么加入两个特征之间线性相关会怎样呢？因为模型的缘故，逻辑回归实质上是在运用线性回归拟合之后再通过一个名为对数几率函数实现 0，1 的转化，而线性回归就涉及到了 OLS （最小二乘法），该方法最大的特点就是特征之间不能存在多重共线性的情况。这会影响拟合从而造成特征权重的误差使结果丢失精度。**
+### 关于特征的其它筛选方法还有很多，由于本次并未涉及，所以碍于篇幅就不展开了。下面开始动手实践。
+```python
+# 首先正则化拿出所有特征
+train_feature = train.filter(regex='Survived|Pclass_.*|sex_.*|Embarked_.*|age_.*|scaler_of_fare|family|call_factorize|Cabin_group|Ticket_group|name_.*|cabin_first|is_group|age_is_null|child_family_little_2|male_than_50')
+train_feature.drop(columns=['last_name_2','name_len'],inplace=True)
+```
+```python
+# 首先导入逻辑回归评估正则化模块 RandomizedLogisticRegression，RandomizedLogisticRegression默认使用l1范数(Lasso回归)，常用的有l1范数和l2范数，具体就不赘述了。
+from sklearn.linear_model import RandomizedLogisticRegression
+train_feature_x = train_feature.as_matrix()[:,1:]
+train_feature_y = train_feature.as_matrix()[:,:1]
+lasso = RandomizedLogisticRegression()
+lasso.fit(train_feature_x,train_feature_y)
+RandomizedLogisticRegression_score = list(zip(lasso.all_scores_,train_feature.columns[1:]))
+RandomizedLogisticRegression_score.sort()
+RandomizedLogisticRegression_score
+```
+![one](/image//Regularization.png)
+### 可以看到，部分特征返回为零，去掉他们然后查看各个变量间的相关系数。
+```python
+train_feature.drop(columns=['Embarked_q','age_11_16','age_16_36','age_36_38','age_38_63','age_78_100',
+                           'age_7_11','age_is_null','is_group','name_20_25','name_25_30'],inplace=True)
+```
+```python
+# seaborn是科学计算领域一个非常棒的可视化模块
+import seaborn as sn
+features = list(train_feature.columns[1:])
+plt.figure(figsize=(14,8))
+colormap = plt.cm.RdBu
+sn.heatmap(train_feature[features].corr(),linewidths=0.1,annot=True)
+```
+![one](/image//Collinearity.png)
+### 关于这个阈值怎么定，关于特征相关性强弱有这样的一个范围参考 `0.7 ~ 1`相关性强，`0.3 ~ 0.7`相关性中等，`0 ~ 0.3`相关性弱。不过比较麻烦的是，这个不是绝对的，当你去掉了一个你认为相关性为中等的特征，实际模型效果变差了或者是变好了，这如果不就实际情况而言实质上很难说，期待自己能够找到更好的筛选特征方法和技巧，这真的是一门艺术。
