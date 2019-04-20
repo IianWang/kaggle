@@ -388,3 +388,35 @@ sn.heatmap(train_feature[features].corr(),linewidths=0.1,annot=True)
 ```
 ![one](/image//Collinearity.png)
 ### 关于这个阈值怎么定，关于特征相关性强弱有这样的一个范围参考 `0.7 ~ 1`相关性强，`0.3 ~ 0.7`相关性中等，`0 ~ 0.3`相关性弱。不过比较麻烦的是，这个不是绝对的，当你去掉了一个你认为相关性为中等的特征，实际模型效果变差了或者是变好了，这如果不就实际情况而言实质上很难说，期待自己能够找到更好的筛选特征方法和技巧，这真的是一门艺术。
+## 5.交叉验证
+**也是调整模型和特征常用的一个方法，也是必做的一项事情。通常碍于最终的预测集不可能总是提交或是到了真实场景我们不知道模型最总表现如何，不能贸然的去使用未经检测过的模型，所以就引入了交叉验证，旨在帮助评测模型的稳定性，不过不能帮助我们评估特征。先上代码**<br>
+```python
+# 交叉验证
+from sklearn.model_selection import cross_val_score
+from sklearn.linear_model import LogisticRegression
+train_feature_x = train_feature.as_matrix()[:,1:]
+train_feature_y = train_feature.as_matrix()[:,:1]
+classifier = linear_model.LogisticRegression(penalty='l2',random_state=0)
+cross_val_score(classifier,train_feature_x,train_feature_y,cv=5)
+```
+```python
+# 输出
+array([0.82122905, 0.82122905, 0.82022472, 0.82022472, 0.81920904])
+```
+**结果会出来5个数，也就是原数据分割5份，拿四份进行训练，预测剩下那份，然后遍历每一个。**<br>
+**倘若模型不够稳定，那么其中会有相差特别大的。**<br>
+## 6.最终提交
+### 关于最终选出的特征一共有11个分别是
+```python
+'Pclass_second'(二等舱)
+'sex_female'(女性)
+'Embarked_c'(登船口c)
+'scaler_of_fare'(票价)
+'family'(家庭人数)
+'child_family_little_3'(家庭人数小于3的孩子)
+'cabin_first'(船舱首字母)
+'call_factorize'(姓名中包含的称呼)
+'name_12_20'(姓名长度12 - 20)
+'male_than_50'(超过50岁的男性)
+'is_group'(是否是群体票)
+```
